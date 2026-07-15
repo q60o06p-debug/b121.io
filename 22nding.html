@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقنية وأناقة   — تعلّم البرمجة بالعربي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Tajawal:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F0E1F;
+    --bg-soft:#141328;
+    --surface:#1B1934;
+    --surface-2:#221F42;
+    --line:#332F5C;
+    --text:#F5F3FF;
+    --muted:#9C97BE;
+    --mint:#2DD4A8;
+    --amber:#FFB86B;
+    --pink:#FF5D8F;
+    --lav:#B9A6FF;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Tajawal', sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3, .display{
+    font-family:'Cairo', sans-serif;
+    font-weight:900;
+  }
+  .mono{
+    font-family:'JetBrains Mono', monospace;
+    direction:ltr;
+    unicode-bidi:isolate;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+
+  /* subtle grid texture background */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:.06;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:relative; z-index:5;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:26px 0;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-size:22px;
+  }
+  .logo .bracket{color:var(--mint);}
+  nav ul{list-style:none; display:flex; gap:34px; font-size:15px; color:var(--muted);}
+  nav ul li a:hover{color:var(--text);}
+  .nav-cta{
+    background:var(--mint); color:#08251C; padding:11px 22px; border-radius:8px;
+    font-weight:700; font-size:14px;
+  }
+  .nav-links, .nav-cta{display:flex;}
+  @media(max-width:820px){ nav ul{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; z-index:2;
+    padding:70px 0 60px;
+    display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center;
+  }
+  @media(max-width:960px){ .hero{grid-template-columns:1fr; padding-top:20px;} }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--mint);
+    background:rgba(45,212,168,.09); border:1px solid rgba(45,212,168,.3);
+    padding:7px 14px; border-radius:100px; margin-bottom:26px;
+    direction:ltr;
+  }
+  .eyebrow .dot{width:7px; height:7px; border-radius:50%; background:var(--mint); animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1} 50%{opacity:.25}}
+
+  .hero h1{
+    font-size:clamp(40px, 5.6vw, 68px);
+    line-height:1.12;
+    letter-spacing:-.5px;
+  }
+  .hero h1 .hl-mint{color:var(--mint);}
+  .hero h1 .hl-pink{color:var(--pink);}
+  .hero p.lead{
+    margin-top:22px; font-size:19px; color:var(--muted); max-width:520px; line-height:1.9;
+  }
+  .hero-ctas{display:flex; gap:14px; margin-top:36px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--pink); color:#2A0716; padding:16px 30px; border-radius:10px;
+    font-weight:700; font-size:16px; box-shadow:0 10px 30px -8px rgba(255,93,143,.55);
+    transition:transform .15s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{
+    border:1px solid var(--line); padding:16px 26px; border-radius:10px;
+    font-weight:600; font-size:16px; color:var(--text); display:flex; align-items:center; gap:8px;
+  }
+  .hero-meta{
+    margin-top:34px; display:flex; gap:26px; color:var(--muted); font-size:13px; flex-wrap:wrap;
+  }
+  .hero-meta strong{color:var(--text); font-family:'Cairo'; font-size:15px;}
+
+  /* ---------- CODE EDITOR SIGNATURE ---------- */
+  .editor{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    box-shadow:0 30px 70px -30px rgba(0,0,0,.7);
+    overflow:hidden;
+  }
+  .editor-top{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:13px 16px; background:var(--surface-2); border-bottom:1px solid var(--line);
+  }
+  .dots{display:flex; gap:7px;}
+  .dots span{width:11px; height:11px; border-radius:50%; display:block;}
+  .dots span:nth-child(1){background:#FF5F57;}
+  .dots span:nth-child(2){background:#FEBC2E;}
+  .dots span:nth-child(3){background:#28C840;}
+  .editor-top .fname{
+    font-family:'JetBrains Mono'; font-size:12.5px; color:var(--muted); direction:ltr;
+  }
+  .editor-body{
+    padding:22px 20px 26px; font-family:'JetBrains Mono', monospace; font-size:15px; line-height:2.05;
+    direction:rtl;
+  }
+  .ln{color:#4E4A78; display:inline-block; width:26px; text-align:left; direction:ltr; user-select:none; font-size:13px;}
+  .kw{color:var(--mint);}
+  .fn{color:var(--lav);}
+  .str{color:var(--amber);}
+  .cm{color:#6F6B95;}
+  .cursor{
+    display:inline-block; width:8px; height:17px; background:var(--pink);
+    vertical-align:middle; animation:blink 1s steps(2) infinite;
+  }
+  @keyframes blink{50%{opacity:0}}
+  .console{
+    margin:18px 20px 20px; background:#0C0B1B; border:1px solid var(--line); border-radius:10px;
+    padding:14px 16px; font-family:'JetBrains Mono'; font-size:13.5px; color:var(--mint);
+  }
+  .console .out-label{color:var(--muted); direction:ltr; display:block; margin-bottom:6px;}
+
+  /* ---------- SECTIONS shared ---------- */
+  section{position:relative; z-index:2; padding:100px 0;}
+  .sec-head{max-width:640px; margin-bottom:56px;}
+  .tag{
+    font-family:'JetBrains Mono'; direction:ltr; display:inline-block; color:var(--muted);
+    font-size:13px; margin-bottom:16px;
+  }
+  .tag::before{content:"// "; color:var(--mint);}
+  .sec-head h2{font-size:clamp(30px,3.4vw,42px); line-height:1.25;}
+  .sec-head p{color:var(--muted); font-size:17px; margin-top:16px; line-height:1.85;}
+
+  /* ---------- FEATURES ---------- */
+  .features{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  @media(max-width:900px){.features{grid-template-columns:1fr 1fr;}}
+  @media(max-width:600px){.features{grid-template-columns:1fr;}}
+  .fcard{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:28px 24px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .fcard:hover{border-color:var(--mint); transform:translateY(-4px);}
+  .fcard .ftag{
+    font-family:'JetBrains Mono'; font-size:12px; color:var(--pink); direction:ltr; display:block; margin-bottom:14px;
+  }
+  .fcard h3{font-size:20px; margin-bottom:10px;}
+  .fcard p{color:var(--muted); font-size:15px; line-height:1.85;}
+
+  /* ---------- PATH / TIMELINE (real sequence -> keeps numbering) ---------- */
+  .path{border-inline-start:2px solid var(--line); padding-inline-start:34px;}
+  .step{position:relative; padding-bottom:44px;}
+  .step:last-child{padding-bottom:0;}
+  .step::before{
+    content:attr(data-n);
+    position:absolute; right:-46px; top:0;
+    width:32px; height:32px; border-radius:8px; background:var(--surface-2); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono'; font-size:13px; color:var(--mint);
+  }
+  html[dir="rtl"] .step::before{right:auto; left:-49px;}
+  .step h3{font-size:19px; margin-bottom:6px;}
+  .step p{color:var(--muted); font-size:15px; max-width:520px; line-height:1.8;}
+
+  /* ---------- TESTIMONIAL / CONSOLE OUTPUT ---------- */
+  .term{
+    background:#0C0B1B; border:1px solid var(--line); border-radius:14px; padding:0; overflow:hidden;
+  }
+  .term-bar{padding:12px 16px; background:var(--surface-2); border-bottom:1px solid var(--line); font-family:'JetBrains Mono'; font-size:12px; color:var(--muted); direction:ltr;}
+  .term-body{padding:26px; font-family:'JetBrains Mono'; font-size:14.5px; line-height:2.1;}
+  .term-body .prompt{color:var(--mint);}
+  .quotes{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:800px){.quotes{grid-template-columns:1fr;}}
+  .quote{color:var(--text); font-family:'Tajawal'; font-size:15.5px; line-height:1.9; margin-bottom:6px;}
+  .who{color:var(--muted); font-size:13px; direction:ltr; text-align:left; margin-top:8px;}
+
+  /* ---------- CTA ---------- */
+  .cta-final{
+    text-align:center; background:linear-gradient(180deg, var(--surface), var(--bg-soft));
+    border:1px solid var(--line); border-radius:22px; padding:80px 30px; margin:0 auto;
+  }
+  .cta-final h2{font-size:clamp(28px,4vw,46px); margin-bottom:18px;}
+  .cta-final p{color:var(--muted); font-size:17px; margin-bottom:34px;}
+  .prompt-line{
+    display:inline-flex; align-items:center; gap:10px; background:#0C0B1B; border:1px solid var(--line);
+    border-radius:10px; padding:14px 20px; font-family:'JetBrains Mono'; direction:ltr; font-size:15px; color:var(--mint);
+    margin-bottom:30px;
+  }
+
+  footer{
+    position:relative; z-index:2; padding:50px 0 40px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px;
+    color:var(--muted); font-size:14px;
+  }
+  footer .fbrand{color:var(--text); font-family:'Cairo'; font-weight:800; font-size:17px;}
+  footer .flinks{display:flex; gap:22px;}
+
+  @media (prefers-reduced-motion: reduce){
+    .dot, .cursor{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <div class="logo display"><span class="bracket">{</span> تقنية وأناقة   <span class="bracket">}</span></div>
+    <ul class="nav-links">
+      <li><a href="#features">المميزات</a></li>
+      <li><a href="#path">المسار</a></li>
+      <li><a href="#voices">آراء المتعلمين</a></li>
+    </ul>
+    <a href="#start" class="nav-cta">جرّب مجانًا</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top:20px;">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> v2.0 · دروس بالعربي الفصحى المبسّطة</div>
+      <h1>اكتب أول سطر <span class="hl-mint">كود</span><br>بلغتك وليس بلغتهم</h1>
+      <p class="lead">"تقنية وأناقة  " يعلّمك أساسيات البرمجة خطوة بخطوة، بمصطلحات عربية واضحة وتمارين تفاعلية تشتغل فعليًا في المتصفح — من غير ما تحس إنك تايه بين مصطلحات إنجليزية.</p>
+      <div class="hero-ctas">
+        <a href="#start" class="btn-primary">ابدأ التجربة مجانًا</a>
+        <a href="#demo" class="btn-ghost">▶ شاهد الدرس الأول</a>
+      </div>
+      <div class="hero-meta">
+        <div><strong>+40,000</strong> متعلم عربي</div>
+        <div><strong>120</strong> درس تفاعلي</div>
+        <div><strong>4.9</strong> تقييم المتعلمين</div>
+      </div>
+    </div>
+
+    <div class="editor">
+      <div class="editor-top">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="fname">درس_1.تقنية وأناقة  </div>
+        <div style="width:40px;"></div>
+      </div>
+      <div class="editor-body">
+        <div><span class="ln">1</span><span class="cm">// أول برنامج ليك</span></div>
+        <div><span class="ln">2</span><span class="kw">دالة</span> <span class="fn">رحّب</span>() {</div>
+        <div><span class="ln">3</span>&nbsp;&nbsp;<span class="kw">اطبع</span>(<span class="str">"مرحبًا بالعالم"</span>)</div>
+        <div><span class="ln">4</span>}</div>
+        <div><span class="ln">5</span><span class="fn">رحّب</span>()<span class="cursor"></span></div>
+      </div>
+      <div class="console">
+        <span class="out-label">▸ الناتج</span>
+        مرحبًا بالعالم ✅
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="tag">why-arabic-first</span>
+      <h2> السر في احتراف البرمجة بسرعة وعمق البرمجة في جوهرها هي طريقة تفكير وحل مشكلات وليست مجرد حفظ كلمات إنجليزية مثل if أو while</h2>
+      <p>عندما تزيل حاجز اللغة، يقل المجهود الذهني المستهلك في الترجمة، ويتفرغ عقلك لبناء "المنطق" البرمجي.</p>
+    </div>
+
+    <div class="features">
+      <div class="fcard">
+        <span class="ftag">#interactive</span>
+        <h3>تمارين تشتغل فورًا</h3>
+        <p>كل درس فيه محرر كود حقيقي جوه الصفحة — تكتب، تشغّل، وتشوف النتيجة على طول من غير تثبيت أي برنامج.</p>
+      </div>
+      <div class="fcard">
+        <span class="ftag">#community</span>
+        <h3>مجتمع مبرمجين عرب</h3>
+        <p>اسأل، شارك حلولك، واتفرج على مشاريع متعلمين أخرين من كل المناطق الكل بدأ زيك بالظبط.</p>
+      </div>
+      <div class="fcard">
+        <span class="ftag">#projects</span>
+        <h3>مشاريع</h3>
+        <p>   أفكار مشاريع "(Real-world Projects) في أشهر المجالات التقنية، تنتهي بمنتج حقيقي قابل للتشغيل والعرض</p>
+      </div>
+      <div class="fcard">
+        <span class="ftag">#feedback</span>
+        <h3>تصحيح فوري وواضح</h3>
+        <p>لما الكود يغلط، بنوريك السبب بالعربي الواضح —   وليس    رسالة خطأ إنجليزية مرعبة مالها معنى لك.</p>
+      </div>
+      <div class="fcard">
+        <span class="ftag">#pace</span>
+        <h3>على مزاجك،   وليس    على جدول</h3>
+        <p>التعلم الذاتي المرن (Self-Paced Learning). الفكرة الأساسية هنا هي إن الوقت ليس عائق، لأنك تقدر تفصل خطة التعلم حسب جدولك اليومي ونمط حياتك.</p>
+      </div>
+      <div class="fcard">
+        <span class="ftag">#realworld</span>
+        <h3>من الأساسيات للاحتراف</h3>
+        <p>هذا هو المسار الأوضح والمنطقي لبناء تطبيق ويب كامل، خطوة بخطوة، دون أي قفزات مفاجئة في الصعوبة.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATH -->
+<section id="path">
+  <div class="wrap" style="max-width:820px; margin:0 auto;">
+    <div class="sec-head">
+      <span class="tag">the-path</span>
+      <h2>مسار التعلّم</h2>
+      <p>أربع مراحل، كل واحدة مبنية فوق اللي قبلها.</p>
+    </div>
+    <div class="path">
+      <div class="step" data-n="1">
+        <h3>الأساسيات</h3>
+        <p>المتغيرات، الشروط، والحلقات — بمصطلحات عربية بسيطة زي "لو"، "كرّر"، و"اطبع".</p>
+      </div>
+      <div class="step" data-n="2">
+        <h3>حل المشكلات</h3>
+        <p>تتعلم تفكّك مشكلة كبيرة لخطوات صغيرة، وتحوّلها لكود شغّال فعليًا.</p>
+      </div>
+      <div class="step" data-n="3">
+        <h3>بناء تطبيقات</h3>
+        <p>واجهات، بيانات، وتفاعل — تبني أول تطبيق ويب بسيط ليك.</p>
+      </div>
+      <div class="step" data-n="4">
+        <h3>مشروع التخرّج</h3>
+        <p>مشروع كامل تختار فكرته بنفسك، وتقدّمه لمراجعة من المجتمع.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOICES -->
+<section id="voices">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="tag">learner-voices</span>
+      <h2>لاتنسوني من دعائكم لعل احدكم اقرب مني الي الله منزله فلا تحرموني بصدق الدعوات بظهر الغيب </h2>
+    </div>
+    <div class="term">
+      <div class="term-bar">community_feed.log</div>
+      <div class="term-body">
+        <div class="quotes">
+          <div>
+            <div class="quote">"أول مرة أفهم إيش معنى ‘حلقة تكرار’ من غير ما أضيع في ترجمة الكلمة الإنجليزية."</div>
+            <div class="who">@nour — طالبة ثانوي، الرياض</div>
+          </div>
+          <div>
+            <div class="quote">"بنيت أول موقع ليّا في تالت أسبوع. حسيت إني فاهم بجد   وليس    حافظ."</div>
+            <div class="who">@yousef — مبتدئ، المدينة</div>
+          </div>
+          <div>
+            <div class="quote">"التمارين التفاعلية خلّت البرمجة تحس إنها لعبة،   وليس    واجب مدرسي."</div>
+            <div class="who">@salma — جامعية، القصيم</div>
+          </div>
+          <div>
+            <div class="quote">"المجتمع رد عليّ في نفس اليوم لما علقت. حسيت إني   وليس    لوحدي."</div>
+            <div class="who">@omar — تبوك</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="start">
+  <div class="wrap">
+    <div class="cta-final">
+      <h2>جاهز تكتب أول سطر كود؟</h2>
+      <p>مجاني تمامًا للدرس الأول — من غير بطاقة ائتمان.</p>
+      <div class="prompt-line"><span style="color:var(--pink)">$</span> ابدأ_رحلتك<span class="cursor"></span></div>
+      <div>
+        <a href="#" class="btn-primary">سجّل مجانًا الآن</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <div class="fbrand">{ تقنية وأناقة   }</div>
+    <div class="flinks">
+      <a href="#features">المميزات</a>
+      <a href="#path">المسار</a>
+      <a href="#voices">الآراء</a>
+    </div>
+    <div>© 2026 تقنية وأناقة  . جميع الحقوق محفوظة.</div>
+  </footer>
+</div>
+
+</body>
+</html>
